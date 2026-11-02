@@ -1,0 +1,575 @@
+[
+  {
+    "tool": "nmap",
+    "aliases": [
+      "nmap"
+    ]
+  },
+  {
+    "tool": "subfinder",
+    "aliases": [
+      "subfinder"
+    ]
+  },
+  {
+    "tool": "amass",
+    "aliases": [
+      "amass"
+    ]
+  },
+  {
+    "tool": "httpx",
+    "aliases": [
+      "httpx"
+    ]
+  },
+  {
+    "tool": "ffuf",
+    "aliases": [
+      "ffuf"
+    ]
+  },
+  {
+    "tool": "gobuster",
+    "aliases": [
+      "gobuster"
+    ]
+  },
+  {
+    "tool": "nuclei",
+    "aliases": [
+      "nuclei"
+    ]
+  },
+  {
+    "tool": "sqlmap",
+    "aliases": [
+      "sqlmap"
+    ]
+  },
+  {
+    "tool": "frida",
+    "aliases": [
+      "frida",
+      "frida-ps"
+    ]
+  },
+  {
+    "tool": "objection",
+    "aliases": [
+      "objection"
+    ]
+  },
+  {
+    "tool": "jadx",
+    "aliases": [
+      "jadx"
+    ]
+  },
+  {
+    "tool": "mitmproxy",
+    "aliases": [
+      "mitmproxy",
+      "mitmdump",
+      "mitmweb"
+    ]
+  },
+  {
+    "tool": "burp",
+    "aliases": [
+      "burp",
+      "burp suite"
+    ]
+  },
+  {
+    "tool": "assetfinder",
+    "aliases": [
+      "assetfinder"
+    ]
+  },
+  {
+    "tool": "findomain",
+    "aliases": [
+      "findomain"
+    ]
+  },
+  {
+    "tool": "knockpy",
+    "aliases": [
+      "knockpy"
+    ]
+  },
+  {
+    "tool": "dnsrecon",
+    "aliases": [
+      "dnsrecon"
+    ]
+  },
+  {
+    "tool": "dnscan",
+    "aliases": [
+      "dnscan"
+    ]
+  },
+  {
+    "tool": "massdns",
+    "aliases": [
+      "massdns"
+    ]
+  },
+  {
+    "tool": "sublist3r",
+    "aliases": [
+      "sublist3r"
+    ]
+  },
+  {
+    "tool": "masscan",
+    "aliases": [
+      "masscan"
+    ]
+  },
+  {
+    "tool": "rustscan",
+    "aliases": [
+      "rustscan"
+    ]
+  },
+  {
+    "tool": "unicornscan",
+    "aliases": [
+      "unicornscan"
+    ]
+  },
+  {
+    "tool": "naabu",
+    "aliases": [
+      "naabu"
+    ]
+  },
+  {
+    "tool": "whatweb",
+    "aliases": [
+      "whatweb"
+    ]
+  },
+  {
+    "tool": "webanalyze",
+    "aliases": [
+      "webanalyze"
+    ]
+  },
+  {
+    "tool": "wpscan",
+    "aliases": [
+      "wpscan"
+    ]
+  },
+  {
+    "tool": "joomscan",
+    "aliases": [
+      "joomscan"
+    ]
+  },
+  {
+    "tool": "droopescan",
+    "aliases": [
+      "droopescan"
+    ]
+  },
+  {
+    "tool": "wafw00f",
+    "aliases": [
+      "wafw00f"
+    ]
+  },
+  {
+    "tool": "fingerprintx",
+    "aliases": [
+      "fingerprintx"
+    ]
+  },
+  {
+    "tool": "dirsearch",
+    "aliases": [
+      "dirsearch"
+    ]
+  },
+  {
+    "tool": "feroxbuster",
+    "aliases": [
+      "feroxbuster"
+    ]
+  },
+  {
+    "tool": "waybackurls",
+    "aliases": [
+      "waybackurls"
+    ]
+  },
+  {
+    "tool": "gau",
+    "aliases": [
+      "gau"
+    ]
+  },
+  {
+    "tool": "katana",
+    "aliases": [
+      "katana"
+    ]
+  },
+  {
+    "tool": "hakrawler",
+    "aliases": [
+      "hakrawler"
+    ]
+  },
+  {
+    "tool": "linkfinder",
+    "aliases": [
+      "linkfinder"
+    ]
+  },
+  {
+    "tool": "paramspider",
+    "aliases": [
+      "paramspider"
+    ]
+  },
+  {
+    "tool": "adb",
+    "aliases": [
+      "adb"
+    ]
+  },
+  {
+    "tool": "drozer",
+    "aliases": [
+      "drozer"
+    ]
+  },
+  {
+    "tool": "class-dump",
+    "aliases": [
+      "class-dump"
+    ]
+  },
+  {
+    "tool": "cycript",
+    "aliases": [
+      "cycript"
+    ]
+  },
+  {
+    "tool": "lldb",
+    "aliases": [
+      "lldb"
+    ]
+  },
+  {
+    "tool": "asar",
+    "aliases": [
+      "asar"
+    ]
+  },
+  {
+    "tool": "cfr",
+    "aliases": [
+      "cfr"
+    ]
+  },
+  {
+    "tool": "openssl",
+    "aliases": [
+      "openssl"
+    ]
+  },
+  {
+    "tool": "shodan",
+    "aliases": [
+      "shodan"
+    ]
+  },
+  {
+    "tool": "wireshark",
+    "aliases": [
+      "wireshark"
+    ]
+  },
+  {
+    "tool": "curl",
+    "aliases": [
+      "curl"
+    ]
+  },
+  {
+    "tool": "dig",
+    "aliases": [
+      "dig"
+    ]
+  },
+  {
+    "tool": "testssl.sh",
+    "aliases": [
+      "testssl.sh"
+    ]
+  },
+  {
+    "tool": "apktool",
+    "aliases": [
+      "apktool"
+    ]
+  },
+  {
+    "tool": "rpcinfo",
+    "aliases": [
+      "rpcinfo"
+    ]
+  },
+  {
+    "tool": "turbo-intruder",
+    "aliases": [
+      "turbo intruder"
+    ],
+    "reason": "Burp extension with an embedded script editor; no standalone CLI."
+  },
+  {
+    "tool": "common-crawl",
+    "aliases": [
+      "common crawl"
+    ],
+    "reason": "Public crawl index service; API commands not yet curated."
+  },
+  {
+    "tool": "google-transparency",
+    "aliases": [
+      "google transparency report"
+    ],
+    "reason": "Browser-based transparency service; no stable CLI."
+  },
+  {
+    "tool": "dnsdumpster",
+    "aliases": [
+      "dnsdumpster"
+    ],
+    "reason": "Browser-based DNS service; no stable CLI curated."
+  },
+  {
+    "tool": "crt.sh",
+    "aliases": [
+      "crt.sh"
+    ],
+    "reason": "Certificate search service; add preferred API queries."
+  },
+  {
+    "tool": "securitytrails",
+    "aliases": [
+      "securitytrails"
+    ],
+    "reason": "Authenticated API service; add organization-approved requests."
+  },
+  {
+    "tool": "virustotal",
+    "aliases": [
+      "virustotal"
+    ],
+    "reason": "Authenticated service; API commands not curated."
+  },
+  {
+    "tool": "censys",
+    "aliases": [
+      "censys"
+    ],
+    "reason": "CLI/API changed across platform generations; commands need review."
+  },
+  {
+    "tool": "wayback-machine",
+    "aliases": [
+      "wayback machine",
+      "wayback cdx",
+      "internet archive"
+    ],
+    "reason": "CDX service; CLI alternatives are catalogued separately."
+  },
+  {
+    "tool": "facebook-ct",
+    "aliases": [
+      "ct.facebook.com",
+      "facebook ct"
+    ],
+    "reason": "Legacy service; availability needs verification."
+  },
+  {
+    "tool": "chaos",
+    "aliases": [
+      "chaos dataset"
+    ],
+    "reason": "API credentials required; commands not curated."
+  },
+  {
+    "tool": "rapid7-sonar",
+    "aliases": [
+      "rapid7 open data",
+      "project sonar",
+      "rapid7 sonar"
+    ],
+    "reason": "Dataset download service; commands not curated."
+  },
+  {
+    "tool": "recon.dev",
+    "aliases": [
+      "recon.dev"
+    ],
+    "reason": "Service availability needs verification."
+  },
+  {
+    "tool": "bufferover.run",
+    "aliases": [
+      "bufferover.run"
+    ],
+    "reason": "Service API needs verification."
+  },
+  {
+    "tool": "certspotter",
+    "aliases": [
+      "certspotter"
+    ],
+    "reason": "Authenticated certificate API; commands not curated."
+  },
+  {
+    "tool": "fofa",
+    "aliases": [
+      "fofa"
+    ],
+    "reason": "Search service; API credentials required."
+  },
+  {
+    "tool": "zoomeye",
+    "aliases": [
+      "zoomeye"
+    ],
+    "reason": "Search service; commands not curated."
+  },
+  {
+    "tool": "dorkassistant",
+    "aliases": [
+      "dorkassistant"
+    ],
+    "reason": "No stable CLI interface confirmed."
+  },
+  {
+    "tool": "wappalyzer",
+    "aliases": [
+      "wappalyzer"
+    ],
+    "reason": "Browser extension/service; webanalyze is catalogued separately."
+  },
+  {
+    "tool": "builtwith",
+    "aliases": [
+      "builtwith"
+    ],
+    "reason": "Authenticated API service; commands not curated."
+  },
+  {
+    "tool": "jsparser",
+    "aliases": [
+      "jsparser"
+    ],
+    "reason": "Ambiguous project name; select a specific implementation."
+  },
+  {
+    "tool": "xposed",
+    "aliases": [
+      "xposed"
+    ],
+    "reason": "GUI/framework workflow; no universal CLI."
+  },
+  {
+    "tool": "fsmon",
+    "aliases": [
+      "fsmon"
+    ],
+    "reason": "Platform-specific CLI requires verification."
+  },
+  {
+    "tool": "hopper",
+    "aliases": [
+      "hopper"
+    ],
+    "reason": "GUI disassembler; launcher depends on platform."
+  },
+  {
+    "tool": "ida",
+    "aliases": [
+      "ida"
+    ],
+    "reason": "GUI disassembler; launcher depends on installed edition."
+  },
+  {
+    "tool": "keychain-dumper",
+    "aliases": [
+      "keychain dumper",
+      "keychain-dumper"
+    ],
+    "reason": "Requires a compatible jailbroken device; flags not curated."
+  },
+  {
+    "tool": "dnspy",
+    "aliases": [
+      "dnspy"
+    ],
+    "reason": "GUI decompiler; edition-specific launcher."
+  },
+  {
+    "tool": "ilspy",
+    "aliases": [
+      "ilspy"
+    ],
+    "reason": "GUI decompiler; ilspycmd is a separate install."
+  },
+  {
+    "tool": "jd-gui",
+    "aliases": [
+      "jd-gui"
+    ],
+    "reason": "GUI Java decompiler."
+  },
+  {
+    "tool": "process-monitor",
+    "aliases": [
+      "process monitor",
+      "procmon"
+    ],
+    "reason": "Windows GUI workflow; CLI flags need review."
+  },
+  {
+    "tool": "api-monitor",
+    "aliases": [
+      "api monitor"
+    ],
+    "reason": "Windows GUI API monitor."
+  },
+  {
+    "tool": "cheat-engine",
+    "aliases": [
+      "cheat engine"
+    ],
+    "reason": "GUI memory inspection tool."
+  },
+  {
+    "tool": "squid",
+    "aliases": [
+      "squid"
+    ],
+    "reason": "Proxy service named for identification, not a test command."
+  },
+  {
+    "tool": "ccproxy",
+    "aliases": [
+      "ccproxy"
+    ],
+    "reason": "Proxy service with GUI configuration."
+  }
+]

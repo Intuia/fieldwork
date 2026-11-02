@@ -1,0 +1,1193 @@
+[
+  {
+    "tool": "nmap",
+    "description": "Host discovery, port scanning, and service enumeration.",
+    "commands": [
+      {
+        "label": "Full TCP scan",
+        "command": "nmap -p- -sV -sC -T4 {{target}} -oA scan"
+      },
+      {
+        "label": "Host discovery",
+        "command": "nmap -sn {{target}}"
+      },
+      {
+        "label": "Selected port",
+        "command": "nmap -sV -p {{port}} {{target}}"
+      },
+      {
+        "label": "Common UDP services",
+        "command": "nmap -sU --top-ports 20 {{target}}",
+        "notes": "UDP scanning generally requires elevated privileges."
+      },
+      {
+        "label": "DNS enumeration",
+        "command": "nmap -p 53 --script dns-brute --script-args dns-brute.domain={{domain}} {{target}}"
+      }
+    ],
+    "sources": [
+      "https://nmap.org/book/man.html"
+    ]
+  },
+  {
+    "tool": "subfinder",
+    "description": "Passive subdomain discovery.",
+    "commands": [
+      {
+        "label": "Passive enumeration",
+        "command": "subfinder -d {{domain}}"
+      },
+      {
+        "label": "All sources",
+        "command": "subfinder -d {{domain}} -all -silent"
+      },
+      {
+        "label": "Domain list",
+        "command": "subfinder -dL {{file}} -o subdomains.txt"
+      },
+      {
+        "label": "JSON lines",
+        "command": "subfinder -d {{domain}} -oJ -o subdomains.jsonl"
+      }
+    ],
+    "sources": [
+      "https://github.com/projectdiscovery/subfinder"
+    ]
+  },
+  {
+    "tool": "amass",
+    "description": "Attack-surface discovery and DNS mapping.",
+    "commands": [
+      {
+        "label": "Enumerate domain",
+        "command": "amass enum -d {{domain}}",
+        "verify": true
+      },
+      {
+        "label": "Passive discovery",
+        "command": "amass enum -passive -d {{domain}}",
+        "verify": true
+      },
+      {
+        "label": "Wordlist discovery",
+        "command": "amass enum -brute -w {{wordlist}} -d {{domain}}",
+        "verify": true
+      }
+    ],
+    "sources": [
+      "https://github.com/owasp-amass/amass/wiki/User-Guide"
+    ]
+  },
+  {
+    "tool": "httpx",
+    "description": "ProjectDiscovery HTTP probing, not the Python HTTPX client.",
+    "commands": [
+      {
+        "label": "Probe hosts",
+        "command": "httpx -l {{file}} -silent"
+      },
+      {
+        "label": "Inspect site",
+        "command": "httpx -u {{url}} -status-code -title -tech-detect"
+      },
+      {
+        "label": "JSON results",
+        "command": "httpx -l {{file}} -json -o httpx.jsonl"
+      }
+    ],
+    "sources": [
+      "https://github.com/projectdiscovery/httpx"
+    ]
+  },
+  {
+    "tool": "ffuf",
+    "description": "HTTP content and parameter discovery.",
+    "commands": [
+      {
+        "label": "Discover paths",
+        "command": "ffuf -u {{url}}/FUZZ -w {{wordlist}} -ac"
+      },
+      {
+        "label": "Recursive discovery",
+        "command": "ffuf -u {{url}}/FUZZ -w {{wordlist}} -recursion -recursion-depth 2"
+      },
+      {
+        "label": "Discover virtual hosts",
+        "command": "ffuf -u {{url}} -H \"Host: FUZZ.{{domain}}\" -w {{wordlist}} -ac"
+      },
+      {
+        "label": "Save JSON",
+        "command": "ffuf -u {{url}}/FUZZ -w {{wordlist}} -of json -o ffuf.json"
+      }
+    ],
+    "sources": [
+      "https://github.com/ffuf/ffuf"
+    ]
+  },
+  {
+    "tool": "gobuster",
+    "description": "Directory, DNS, and virtual host discovery.",
+    "commands": [
+      {
+        "label": "Discover paths",
+        "command": "gobuster dir -u {{url}} -w {{wordlist}}"
+      },
+      {
+        "label": "Find extensions",
+        "command": "gobuster dir -u {{url}} -w {{wordlist}} -x php,html,txt"
+      },
+      {
+        "label": "DNS enumeration",
+        "command": "gobuster dns -do {{domain}} -w {{wordlist}}"
+      },
+      {
+        "label": "Virtual hosts",
+        "command": "gobuster vhost -u {{url}} --append-domain -w {{wordlist}}"
+      }
+    ],
+    "sources": [
+      "https://github.com/OJ/gobuster"
+    ]
+  },
+  {
+    "tool": "nuclei",
+    "description": "Template-based scanning. Review selected templates before running.",
+    "commands": [
+      {
+        "label": "Technology checks",
+        "command": "nuclei -u {{url}} -tags tech -rate-limit 10"
+      },
+      {
+        "label": "Explicit template",
+        "command": "nuclei -u {{url}} -t {{file}} -rate-limit 10"
+      },
+      {
+        "label": "Selected severities",
+        "command": "nuclei -u {{url}} -severity low,medium -rate-limit 10"
+      },
+      {
+        "label": "Target list",
+        "command": "nuclei -l {{file}} -tags tech -jsonl -o nuclei.jsonl -rate-limit 10"
+      }
+    ],
+    "sources": [
+      "https://projectdiscovery.io/open-source"
+    ]
+  },
+  {
+    "tool": "sqlmap",
+    "description": "SQL injection testing with bounded detection settings.",
+    "commands": [
+      {
+        "label": "Basic detection",
+        "command": "sqlmap -u \"{{url}}\" --batch --level=1 --risk=1"
+      },
+      {
+        "label": "Saved request",
+        "command": "sqlmap -r {{file}} --batch --level=1 --risk=1"
+      },
+      {
+        "label": "Form detection",
+        "command": "sqlmap -u \"{{url}}\" --forms --batch --level=1 --risk=1"
+      }
+    ],
+    "sources": [
+      "https://github.com/sqlmapproject/sqlmap/wiki/Usage"
+    ]
+  },
+  {
+    "tool": "frida",
+    "description": "Runtime instrumentation on local and connected devices.",
+    "commands": [
+      {
+        "label": "USB processes",
+        "command": "frida-ps -U",
+        "verify": true
+      },
+      {
+        "label": "Installed applications",
+        "command": "frida-ps -Uai",
+        "verify": true
+      },
+      {
+        "label": "Attach to process",
+        "command": "frida -U -n {{target}}",
+        "verify": true
+      },
+      {
+        "label": "Load script at spawn",
+        "command": "frida -U -f {{target}} -l {{file}}",
+        "verify": true
+      }
+    ],
+    "sources": [
+      "https://frida.re/docs/frida-ps/"
+    ]
+  },
+  {
+    "tool": "objection",
+    "description": "Interactive mobile exploration. Check installed version: start replaced explore.",
+    "commands": [
+      {
+        "label": "Start session",
+        "command": "objection -n {{target}} start",
+        "verify": true
+      },
+      {
+        "label": "List applications",
+        "command": "objection list-applications",
+        "verify": true
+      },
+      {
+        "label": "Patch test APK",
+        "command": "objection patchapk --source {{file}}",
+        "notes": "Creates a modified APK; use a copy of your test application.",
+        "verify": true
+      }
+    ],
+    "sources": [
+      "https://github.com/sensepost/objection/wiki/Using-objection"
+    ]
+  },
+  {
+    "tool": "jadx",
+    "description": "Android DEX and APK decompilation.",
+    "commands": [
+      {
+        "label": "Decompile APK",
+        "command": "jadx -d jadx-output {{file}}"
+      },
+      {
+        "label": "Deobfuscate names",
+        "command": "jadx --deobf -d jadx-output {{file}}"
+      },
+      {
+        "label": "Sources only",
+        "command": "jadx --no-res -d jadx-output {{file}}"
+      }
+    ],
+    "sources": [
+      "https://github.com/skylot/jadx"
+    ]
+  },
+  {
+    "tool": "mitmproxy",
+    "description": "Intercept and inspect HTTP traffic.",
+    "commands": [
+      {
+        "label": "Listen on port",
+        "command": "mitmproxy --listen-port {{port}}"
+      },
+      {
+        "label": "Save flows",
+        "command": "mitmdump -w {{file}}"
+      },
+      {
+        "label": "Read saved flows",
+        "command": "mitmproxy -r {{file}}"
+      },
+      {
+        "label": "Reverse proxy",
+        "command": "mitmproxy --mode reverse:{{url}}"
+      }
+    ],
+    "sources": [
+      "https://docs.mitmproxy.org/stable/"
+    ]
+  },
+  {
+    "tool": "burp",
+    "description": "Burp Suite Java launcher. Use your installed Burp JAR as file.",
+    "commands": [
+      {
+        "label": "Launch suite",
+        "command": "java -jar {{file}}",
+        "verify": true
+      },
+      {
+        "label": "Launch with memory allocation",
+        "command": "java -Xmx2g -jar {{file}}",
+        "verify": true
+      },
+      {
+        "label": "Launch without extensions",
+        "command": "java -jar {{file}} --disable-extensions",
+        "verify": true
+      }
+    ],
+    "sources": [
+      "https://portswigger.net/burp/documentation/desktop/getting-started/launch-from-command-line"
+    ]
+  },
+  {
+    "tool": "assetfinder",
+    "description": "Subdomain discovery",
+    "commands": [
+      {
+        "label": "Related assets",
+        "command": "assetfinder {{domain}}",
+        "verify": true
+      },
+      {
+        "label": "Subdomains only",
+        "command": "assetfinder --subs-only {{domain}}",
+        "verify": true
+      },
+      {
+        "label": "Save results",
+        "command": "assetfinder --subs-only {{domain}} > subdomains.txt",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "findomain",
+    "description": "Certificate-based subdomain discovery",
+    "commands": [
+      {
+        "label": "Enumerate",
+        "command": "findomain -t {{domain}}",
+        "verify": true
+      },
+      {
+        "label": "Save results",
+        "command": "findomain -t {{domain}} -u subdomains.txt",
+        "verify": true
+      },
+      {
+        "label": "Domain list",
+        "command": "findomain -f {{file}}",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "knockpy",
+    "description": "DNS subdomain enumeration",
+    "commands": [
+      {
+        "label": "Domain scan",
+        "command": "knockpy -d {{domain}}",
+        "verify": true
+      },
+      {
+        "label": "Reconnaissance",
+        "command": "knockpy -d {{domain}} --recon",
+        "verify": true
+      },
+      {
+        "label": "Wordlist scan",
+        "command": "knockpy -d {{domain}} --bruteforce --wordlist {{wordlist}}",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "dnsrecon",
+    "description": "DNS record enumeration",
+    "commands": [
+      {
+        "label": "Standard records",
+        "command": "dnsrecon -d {{domain}} -t std",
+        "verify": true
+      },
+      {
+        "label": "Zone transfer test",
+        "command": "dnsrecon -d {{domain}} -t axfr",
+        "verify": true
+      },
+      {
+        "label": "Wordlist discovery",
+        "command": "dnsrecon -d {{domain}} -D {{wordlist}} -t brt",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "dnscan",
+    "description": "DNS wordlist scanner",
+    "commands": [
+      {
+        "label": "Domain scan",
+        "command": "python dnscan.py -d {{domain}} -w {{wordlist}}",
+        "verify": true
+      },
+      {
+        "label": "Domain list",
+        "command": "python dnscan.py -l {{file}} -w {{wordlist}}",
+        "verify": true
+      },
+      {
+        "label": "Save results",
+        "command": "python dnscan.py -d {{domain}} -w {{wordlist}} -o dns.txt",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "massdns",
+    "description": "High-throughput DNS resolver. file contains resolver IP addresses.",
+    "commands": [
+      {
+        "label": "A records",
+        "command": "massdns -r {{file}} -t A -o S {{wordlist}}",
+        "verify": true
+      },
+      {
+        "label": "AAAA records",
+        "command": "massdns -r {{file}} -t AAAA -o S {{wordlist}}",
+        "verify": true
+      },
+      {
+        "label": "CNAME records",
+        "command": "massdns -r {{file}} -t CNAME -o S {{wordlist}}",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "sublist3r",
+    "description": "Search engine subdomain enumeration",
+    "commands": [
+      {
+        "label": "Enumerate",
+        "command": "sublist3r -d {{domain}}",
+        "verify": true
+      },
+      {
+        "label": "Save results",
+        "command": "sublist3r -d {{domain}} -o subdomains.txt",
+        "verify": true
+      },
+      {
+        "label": "Verbose enumeration",
+        "command": "sublist3r -d {{domain}} -v",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "masscan",
+    "description": "High-speed port scanner. Keep rate appropriate for the test network.",
+    "commands": [
+      {
+        "label": "Selected port",
+        "command": "masscan {{target}} -p{{port}} --rate 100",
+        "verify": true
+      },
+      {
+        "label": "Web ports",
+        "command": "masscan {{target}} -p80,443 --rate 100",
+        "verify": true
+      },
+      {
+        "label": "Save list",
+        "command": "masscan {{target}} -p{{port}} --rate 100 -oL masscan.txt",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "rustscan",
+    "description": "Fast port discovery with Nmap integration",
+    "commands": [
+      {
+        "label": "Default discovery",
+        "command": "rustscan -a {{target}}",
+        "verify": true
+      },
+      {
+        "label": "Selected port",
+        "command": "rustscan -a {{target}} -p {{port}}",
+        "verify": true
+      },
+      {
+        "label": "Version discovery",
+        "command": "rustscan -a {{target}} -- -sV",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "unicornscan",
+    "description": "Asynchronous network scanner",
+    "commands": [
+      {
+        "label": "TCP discovery",
+        "command": "unicornscan -mT {{target}}:{{port}}",
+        "verify": true
+      },
+      {
+        "label": "UDP discovery",
+        "command": "unicornscan -mU {{target}}:{{port}}",
+        "verify": true
+      },
+      {
+        "label": "Rate-limited TCP",
+        "command": "unicornscan -r 100 -mT {{target}}:{{port}}",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "naabu",
+    "description": "Port discovery",
+    "commands": [
+      {
+        "label": "Top ports",
+        "command": "naabu -host {{target}} -top-ports 100",
+        "verify": true
+      },
+      {
+        "label": "Selected ports",
+        "command": "naabu -host {{target}} -p {{port}}",
+        "verify": true
+      },
+      {
+        "label": "Target list",
+        "command": "naabu -list {{file}} -o ports.txt",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "whatweb",
+    "description": "Web technology fingerprinting",
+    "commands": [
+      {
+        "label": "Inspect URL",
+        "command": "whatweb {{url}}",
+        "verify": true
+      },
+      {
+        "label": "Verbose inspection",
+        "command": "whatweb -v {{url}}",
+        "verify": true
+      },
+      {
+        "label": "Target list",
+        "command": "whatweb -i {{file}} --log-json=whatweb.json",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "webanalyze",
+    "description": "Technology fingerprinting",
+    "commands": [
+      {
+        "label": "Single host",
+        "command": "webanalyze -host {{url}}",
+        "verify": true
+      },
+      {
+        "label": "Host list",
+        "command": "webanalyze -hosts {{file}}",
+        "verify": true
+      },
+      {
+        "label": "JSON output",
+        "command": "webanalyze -host {{url}} -output json",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "wpscan",
+    "description": "WordPress security inventory",
+    "commands": [
+      {
+        "label": "Scan site",
+        "command": "wpscan --url {{url}}",
+        "verify": true
+      },
+      {
+        "label": "Passive plugin inventory",
+        "command": "wpscan --url {{url}} --enumerate ap --plugins-detection passive",
+        "verify": true
+      },
+      {
+        "label": "JSON report",
+        "command": "wpscan --url {{url}} --format json --output wpscan.json",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "joomscan",
+    "description": "Joomla scanner",
+    "commands": [
+      {
+        "label": "Inspect site",
+        "command": "perl joomscan.pl -u {{url}}",
+        "verify": true
+      },
+      {
+        "label": "Component inventory",
+        "command": "perl joomscan.pl -u {{url}} --enumerate-components",
+        "verify": true
+      },
+      {
+        "label": "Set timeout",
+        "command": "perl joomscan.pl -u {{url}} --timeout 10",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "droopescan",
+    "description": "CMS scanner",
+    "commands": [
+      {
+        "label": "Drupal scan",
+        "command": "droopescan scan drupal -u {{url}}",
+        "verify": true
+      },
+      {
+        "label": "SilverStripe scan",
+        "command": "droopescan scan silverstripe -u {{url}}",
+        "verify": true
+      },
+      {
+        "label": "Drupal URL list",
+        "command": "droopescan scan drupal -U {{file}}",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "wafw00f",
+    "description": "WAF fingerprinting",
+    "commands": [
+      {
+        "label": "Identify WAF",
+        "command": "wafw00f {{url}}",
+        "verify": true
+      },
+      {
+        "label": "All matches",
+        "command": "wafw00f -a {{url}}",
+        "verify": true
+      },
+      {
+        "label": "Target list",
+        "command": "wafw00f -i {{file}}",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "fingerprintx",
+    "description": "Service fingerprinting",
+    "commands": [
+      {
+        "label": "Host and port",
+        "command": "fingerprintx -t {{target}}:{{port}}",
+        "verify": true
+      },
+      {
+        "label": "Target list",
+        "command": "fingerprintx -l {{file}}",
+        "verify": true
+      },
+      {
+        "label": "JSON output",
+        "command": "fingerprintx -t {{target}}:{{port}} -json",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "dirsearch",
+    "description": "Web path discovery",
+    "commands": [
+      {
+        "label": "Wordlist paths",
+        "command": "dirsearch -u {{url}} -w {{wordlist}}",
+        "verify": true
+      },
+      {
+        "label": "Extensions",
+        "command": "dirsearch -u {{url}} -e php,html,txt -w {{wordlist}}",
+        "verify": true
+      },
+      {
+        "label": "Recursive paths",
+        "command": "dirsearch -u {{url}} -w {{wordlist}} -r",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "feroxbuster",
+    "description": "Recursive content discovery",
+    "commands": [
+      {
+        "label": "Discover paths",
+        "command": "feroxbuster -u {{url}} -w {{wordlist}}",
+        "verify": true
+      },
+      {
+        "label": "Depth limit",
+        "command": "feroxbuster -u {{url}} -w {{wordlist}} -d 2",
+        "verify": true
+      },
+      {
+        "label": "Save report",
+        "command": "feroxbuster -u {{url}} -w {{wordlist}} -o ferox.txt",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "waybackurls",
+    "description": "Historical URL discovery",
+    "commands": [
+      {
+        "label": "Domain URLs",
+        "command": "printf \"%s\\n\" \"{{domain}}\" | waybackurls",
+        "verify": true
+      },
+      {
+        "label": "Exclude subdomains",
+        "command": "printf \"%s\\n\" \"{{domain}}\" | waybackurls -no-subs",
+        "verify": true
+      },
+      {
+        "label": "Save URLs",
+        "command": "printf \"%s\\n\" \"{{domain}}\" | waybackurls > urls.txt",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "gau",
+    "description": "Historical URL aggregation",
+    "commands": [
+      {
+        "label": "Domain URLs",
+        "command": "gau {{domain}}",
+        "verify": true
+      },
+      {
+        "label": "Include subdomains",
+        "command": "gau --subs {{domain}}",
+        "verify": true
+      },
+      {
+        "label": "JSON output",
+        "command": "gau --json {{domain}}",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "katana",
+    "description": "Web crawling",
+    "commands": [
+      {
+        "label": "Crawl URL",
+        "command": "katana -u {{url}}",
+        "verify": true
+      },
+      {
+        "label": "Depth three",
+        "command": "katana -u {{url}} -d 3",
+        "verify": true
+      },
+      {
+        "label": "JavaScript crawling",
+        "command": "katana -u {{url}} -jc -o urls.txt",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "hakrawler",
+    "description": "Link and endpoint crawling",
+    "commands": [
+      {
+        "label": "Crawl URL",
+        "command": "printf \"%s\\n\" \"{{url}}\" | hakrawler",
+        "verify": true
+      },
+      {
+        "label": "Depth three",
+        "command": "printf \"%s\\n\" \"{{url}}\" | hakrawler -d 3",
+        "verify": true
+      },
+      {
+        "label": "Include subdomains",
+        "command": "printf \"%s\\n\" \"{{url}}\" | hakrawler -subs",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "linkfinder",
+    "description": "JavaScript endpoint extraction",
+    "commands": [
+      {
+        "label": "Inspect JavaScript",
+        "command": "python linkfinder.py -i {{url}} -o cli",
+        "verify": true
+      },
+      {
+        "label": "Inspect local file",
+        "command": "python linkfinder.py -i {{file}} -o cli",
+        "verify": true
+      },
+      {
+        "label": "HTML report",
+        "command": "python linkfinder.py -i {{url}} -o report.html",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "paramspider",
+    "description": "Historical URL parameter discovery",
+    "commands": [
+      {
+        "label": "Domain URLs",
+        "command": "paramspider -d {{domain}}",
+        "verify": true
+      },
+      {
+        "label": "Domain list",
+        "command": "paramspider -l {{file}}",
+        "verify": true
+      },
+      {
+        "label": "Stream URLs",
+        "command": "paramspider -d {{domain}} -s",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "adb",
+    "description": "Android Debug Bridge",
+    "commands": [
+      {
+        "label": "Connected devices",
+        "command": "adb devices -l",
+        "verify": true
+      },
+      {
+        "label": "Device logs",
+        "command": "adb logcat",
+        "verify": true
+      },
+      {
+        "label": "Package inventory",
+        "command": "adb shell pm list packages",
+        "verify": true
+      },
+      {
+        "label": "Package metadata",
+        "command": "adb shell dumpsys package {{target}}",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "drozer",
+    "description": "Android component analysis. Console commands are entered inside drozer.",
+    "commands": [
+      {
+        "label": "Connect console",
+        "command": "drozer console connect",
+        "verify": true
+      },
+      {
+        "label": "Package details",
+        "command": "run app.package.info -a {{target}}",
+        "verify": true
+      },
+      {
+        "label": "Attack surface",
+        "command": "run app.package.attacksurface {{target}}",
+        "verify": true
+      },
+      {
+        "label": "Activities",
+        "command": "run app.activity.info -a {{target}}",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "class-dump",
+    "description": "Objective-C header extraction from an unpacked Mach-O binary",
+    "commands": [
+      {
+        "label": "Dump headers",
+        "command": "class-dump {{file}}",
+        "verify": true
+      },
+      {
+        "label": "Write header directory",
+        "command": "class-dump -H -o headers {{file}}",
+        "verify": true
+      },
+      {
+        "label": "Print instance variable offsets",
+        "command": "class-dump -I {{file}}",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "cycript",
+    "description": "Objective-C runtime console on compatible jailbroken devices",
+    "commands": [
+      {
+        "label": "Attach by name",
+        "command": "cycript -p {{target}}",
+        "verify": true
+      },
+      {
+        "label": "Run script",
+        "command": "cycript {{file}}",
+        "verify": true
+      },
+      {
+        "label": "Attach and load script",
+        "command": "cycript -p {{target}} {{file}}",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "lldb",
+    "description": "Native debugging. Subsequent commands run inside the debugger.",
+    "commands": [
+      {
+        "label": "Open binary",
+        "command": "lldb {{file}}",
+        "verify": true
+      },
+      {
+        "label": "Attach by name",
+        "command": "lldb -n {{target}}",
+        "verify": true
+      },
+      {
+        "label": "Inspect binary metadata",
+        "command": "lldb -b -o \"image list\" -o quit {{file}}",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "asar",
+    "description": "Electron archive inspection",
+    "commands": [
+      {
+        "label": "List archive",
+        "command": "asar list {{file}}",
+        "verify": true
+      },
+      {
+        "label": "Extract archive",
+        "command": "asar extract {{file}} asar-output",
+        "verify": true
+      },
+      {
+        "label": "List unpacked paths",
+        "command": "asar list {{file}} --is-pack",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "cfr",
+    "description": "Java decompiler. file is the input JAR; install cfr.jar locally.",
+    "commands": [
+      {
+        "label": "Decompile archive",
+        "command": "java -jar cfr.jar {{file}} --outputdir cfr-output",
+        "verify": true
+      },
+      {
+        "label": "Include silent output",
+        "command": "java -jar cfr.jar {{file}} --silent true --outputdir cfr-output",
+        "verify": true
+      },
+      {
+        "label": "Do not rename members",
+        "command": "java -jar cfr.jar {{file}} --renamedupmembers false --outputdir cfr-output",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "openssl",
+    "description": "TLS certificate and handshake inspection",
+    "commands": [
+      {
+        "label": "TLS handshake",
+        "command": "openssl s_client -connect {{target}}:{{port}} -servername {{domain}}",
+        "verify": true
+      },
+      {
+        "label": "Certificate details",
+        "command": "openssl x509 -in {{file}} -text -noout",
+        "verify": true
+      },
+      {
+        "label": "Certificate expiration",
+        "command": "openssl x509 -in {{file}} -enddate -noout",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "shodan",
+    "description": "Shodan CLI. Requires configured API credentials.",
+    "commands": [
+      {
+        "label": "Host inventory",
+        "command": "shodan host {{target}}",
+        "verify": true
+      },
+      {
+        "label": "Domain search",
+        "command": "shodan search \"hostname:{{domain}}\"",
+        "verify": true
+      },
+      {
+        "label": "Search count",
+        "command": "shodan count \"hostname:{{domain}}\"",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "wireshark",
+    "description": "Packet capture and offline inspection",
+    "commands": [
+      {
+        "label": "Open capture",
+        "command": "wireshark -r {{file}}",
+        "verify": true
+      },
+      {
+        "label": "List interfaces",
+        "command": "tshark -D",
+        "verify": true
+      },
+      {
+        "label": "Summarize protocols",
+        "command": "tshark -r {{file}} -q -z io,phs",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "curl",
+    "description": "HTTP request inspection",
+    "commands": [
+      {
+        "label": "Response headers",
+        "command": "curl -I \"{{url}}\"",
+        "verify": true
+      },
+      {
+        "label": "Verbose request",
+        "command": "curl -v \"{{url}}\"",
+        "verify": true
+      },
+      {
+        "label": "Save response",
+        "command": "curl \"{{url}}\" -o {{file}}",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "dig",
+    "description": "DNS query tool",
+    "commands": [
+      {
+        "label": "A records",
+        "command": "dig {{domain}} A",
+        "verify": true
+      },
+      {
+        "label": "Name servers",
+        "command": "dig {{domain}} NS",
+        "verify": true
+      },
+      {
+        "label": "TXT records",
+        "command": "dig {{domain}} TXT",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "testssl.sh",
+    "description": "TLS configuration inspection",
+    "commands": [
+      {
+        "label": "TLS overview",
+        "command": "testssl.sh {{target}}:{{port}}",
+        "verify": true
+      },
+      {
+        "label": "Protocol versions",
+        "command": "testssl.sh --protocols {{target}}:{{port}}",
+        "verify": true
+      },
+      {
+        "label": "Certificate details",
+        "command": "testssl.sh --server-defaults {{target}}:{{port}}",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "apktool",
+    "description": "Decode and rebuild APK resources; work on a copy.",
+    "commands": [
+      {
+        "label": "Decode resources",
+        "command": "apktool d {{file}} -o apktool-output",
+        "verify": true
+      },
+      {
+        "label": "Decode without sources",
+        "command": "apktool d -s {{file}} -o apktool-output",
+        "verify": true
+      },
+      {
+        "label": "Rebuild decoded directory",
+        "command": "apktool b {{file}} -o rebuilt.apk",
+        "verify": true
+      }
+    ]
+  },
+  {
+    "tool": "rpcinfo",
+    "description": "RPC service inventory",
+    "commands": [
+      {
+        "label": "List RPC services",
+        "command": "rpcinfo -p {{target}}",
+        "verify": true
+      },
+      {
+        "label": "TCP program probe",
+        "command": "rpcinfo -T tcp {{target}} 100003",
+        "verify": true
+      },
+      {
+        "label": "UDP program probe",
+        "command": "rpcinfo -T udp {{target}} 100003",
+        "verify": true
+      }
+    ]
+  }
+]

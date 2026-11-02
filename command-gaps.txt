@@ -1,0 +1,121 @@
+
+> fieldwork-checklist@1.0.0 commands:report
+> node scripts/commands-report.mjs
+
+[6] Web / Subdomain Enumeration: Use DNSdumpster for DNS recon and visual subdomain mapping
+  Missing: dnsdumpster
+[7] Web / Subdomain Enumeration: Query crt.sh certificate transparency logs for subdomain enumeration
+  Missing: crt.sh
+[8] Web / Subdomain Enumeration: Use SecurityTrails API for historical and current DNS records
+  Missing: securitytrails
+[9] Web / Subdomain Enumeration: Use wayback machine CDX API for discovering old subdomains
+  Missing: wayback-machine
+[10] Web / Subdomain Enumeration: Use VirusTotal domain report for subdomain enumeration from passive DNS
+  Missing: virustotal
+[12] Web / Subdomain Enumeration: Use Censys for certificate-based subdomain discovery at scale
+  Missing: censys
+[13] Web / Subdomain Enumeration: Use Facebook CT logs (ct.facebook.com) for certificate transparency search
+  Missing: facebook-ct
+[24] Web / Subdomain Enumeration: Use Google Transparency Report for certificate search
+  Missing: google-transparency
+[34] Web / Subdomain Enumeration: Use Chaos dataset from ProjectDiscovery for community subdomains
+  Missing: chaos
+[36] Web / Subdomain Enumeration: Use Rapid7 Open Data (Project Sonar) for forward DNS lookup
+  Missing: rapid7-sonar
+[39] Web / Subdomain Enumeration: Use Recon.dev API for subdomain enumeration from recon data
+  Missing: recon.dev
+[41] Web / Subdomain Enumeration: Search for subdomains in Internet Archive Wayback CDX API
+  Missing: wayback-machine
+[42] Web / Subdomain Enumeration: Look for subdomains in technology detection tools (Wappalyzer)
+  Missing: wappalyzer
+[43] Web / Subdomain Enumeration: Use BufferOver.run for subdomain data from Rapid7 Sonar
+  Missing: rapid7-sonar, bufferover.run
+[44] Web / Subdomain Enumeration: Check for subdomains in Common Crawl data index
+  Missing: common-crawl
+[47] Web / Subdomain Enumeration: Use CertSpotter API for certificate transparency monitoring
+  Missing: certspotter
+[48] Web / Subdomain Enumeration: Search for subdomains in FOFA search engine
+  Missing: fofa
+[49] Web / Subdomain Enumeration: Check for subdomains in ZoomEye search engine
+  Missing: zoomeye
+[50] Web / Subdomain Enumeration: Use DorkAssistant for automated Google dork subdomain enumeration
+  Missing: dorkassistant
+[67] Web / Port Scanning & Service Enumeration: Identify proxy services (Squid on 3128, SOCKS on 1080, CCProxy on 808)
+  Missing: squid, ccproxy
+[101] Web / Technology Fingerprinting: Use Wappalyzer browser extension for technology stack detection
+  Missing: wappalyzer
+[103] Web / Technology Fingerprinting: Use webanalyze (Go-based Wappalyzer) for fast batch fingerprinting
+  Missing: wappalyzer
+[116] Web / Technology Fingerprinting: Use BuiltWith API for detailed technology profiling and history
+  Missing: builtwith
+[117] Web / Technology Fingerprinting: Check for WAF using wafw00f or wappalyzer WAF detection
+  Missing: wappalyzer
+[164] Web / Content & URL Discovery: Use waybackurls for historical URL discovery from Wayback Machine
+  Missing: wayback-machine
+[165] Web / Content & URL Discovery: Use gau for fetching URLs from AlienVault, Wayback, Common Crawl
+  Missing: common-crawl
+[195] Web / Link & Parameter Discovery: Extract API endpoints from JS files using JSParser analysis
+  Missing: jsparser
+[674] Web / Race Conditions: Test for race condition with concurrent HTTP requests (Turbo Intruder)
+  Missing: turbo-intruder
+[1033] Android / Dynamic Analysis: Use Xposed framework for runtime method modification
+  Missing: xposed
+[1046] Android / Dynamic Analysis: Monitor file system changes during app usage with fsmon
+  Missing: fsmon
+[1095] Android / Reverse Engineering Protection: Test for Xposed detection implementation and bypass
+  Missing: xposed
+[1123] iOS / Static Analysis: Use Hopper/IDA for disassembly and control flow analysis
+  Missing: hopper, ida
+[1160] iOS / Dynamic Analysis: Monitor Keychain access with Keychain dumper tool
+  Missing: keychain-dumper
+[1217] Thick Client / Static Analysis: Decompile .NET applications with dnSpy/ILSpy for source review
+  Missing: dnspy, ilspy
+[1218] Thick Client / Static Analysis: Decompile Java applications with JD-GUI/CFR for source review
+  Missing: jd-gui
+[1240] Thick Client / Dynamic Analysis: Monitor file system access with Process Monitor (Sysinternals)
+  Missing: process-monitor
+[1241] Thick Client / Dynamic Analysis: Monitor registry access with Process Monitor
+  Missing: process-monitor
+[1242] Thick Client / Dynamic Analysis: Monitor process creation with Process Monitor
+  Missing: process-monitor
+[1243] Thick Client / Dynamic Analysis: Use API monitor for detailed API call analysis
+  Missing: api-monitor
+[1249] Thick Client / Dynamic Analysis: Use Cheat Engine for memory analysis and value modification
+  Missing: cheat-engine
+
+8207 checks scanned; 116 linked checks; 54 command tools; 40 checks with command gaps.
+turbo-intruder: Burp extension with an embedded script editor; no standalone CLI.
+common-crawl: Public crawl index service; API commands not yet curated.
+google-transparency: Browser-based transparency service; no stable CLI.
+dnsdumpster: Browser-based DNS service; no stable CLI curated.
+crt.sh: Certificate search service; add preferred API queries.
+securitytrails: Authenticated API service; add organization-approved requests.
+virustotal: Authenticated service; API commands not curated.
+censys: CLI/API changed across platform generations; commands need review.
+wayback-machine: CDX service; CLI alternatives are catalogued separately.
+facebook-ct: Legacy service; availability needs verification.
+chaos: API credentials required; commands not curated.
+rapid7-sonar: Dataset download service; commands not curated.
+recon.dev: Service availability needs verification.
+bufferover.run: Service API needs verification.
+certspotter: Authenticated certificate API; commands not curated.
+fofa: Search service; API credentials required.
+zoomeye: Search service; commands not curated.
+dorkassistant: No stable CLI interface confirmed.
+wappalyzer: Browser extension/service; webanalyze is catalogued separately.
+builtwith: Authenticated API service; commands not curated.
+jsparser: Ambiguous project name; select a specific implementation.
+xposed: GUI/framework workflow; no universal CLI.
+fsmon: Platform-specific CLI requires verification.
+hopper: GUI disassembler; launcher depends on platform.
+ida: GUI disassembler; launcher depends on installed edition.
+keychain-dumper: Requires a compatible jailbroken device; flags not curated.
+dnspy: GUI decompiler; edition-specific launcher.
+ilspy: GUI decompiler; ilspycmd is a separate install.
+jd-gui: GUI Java decompiler.
+process-monitor: Windows GUI workflow; CLI flags need review.
+api-monitor: Windows GUI API monitor.
+cheat-engine: GUI memory inspection tool.
+squid: Proxy service named for identification, not a test command.
+ccproxy: Proxy service with GUI configuration.
+Matching uses the reviewed alias registry. Add new tool names to src/data/toolRegistry.json.
