@@ -21,6 +21,7 @@ export const builtTools: Tool[] = registry.map((entry) => {
     tool: entry.tool,
     description: 'reason' in entry ? entry.reason || '' : '',
     commands: [],
+    sources: 'reference' in entry && entry.reference ? [entry.reference] : undefined,
   };
 });
 const toolMap: Record<string, string[]> = toolMapData;

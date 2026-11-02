@@ -332,56 +332,52 @@
     "aliases": [
       "turbo intruder"
     ],
-    "reason": "Burp extension with an embedded script editor; no standalone CLI."
+    "reason": "Burp extension with a Python script editor; no supported standalone CLI. Use its shipped templates inside Burp.",
+    "reference": "https://github.com/PortSwigger/turbo-intruder"
   },
   {
     "tool": "common-crawl",
     "aliases": [
       "common crawl"
-    ],
-    "reason": "Public crawl index service; API commands not yet curated."
+    ]
   },
   {
     "tool": "google-transparency",
     "aliases": [
       "google transparency report"
     ],
-    "reason": "Browser-based transparency service; no stable CLI."
+    "reason": "Web reporting interface; no documented stable domain-search CLI found.",
+    "reference": "https://transparencyreport.google.com/https/certificates"
   },
   {
     "tool": "dnsdumpster",
     "aliases": [
       "dnsdumpster"
-    ],
-    "reason": "Browser-based DNS service; no stable CLI curated."
+    ]
   },
   {
     "tool": "crt.sh",
     "aliases": [
       "crt.sh"
-    ],
-    "reason": "Certificate search service; add preferred API queries."
+    ]
   },
   {
     "tool": "securitytrails",
     "aliases": [
       "securitytrails"
-    ],
-    "reason": "Authenticated API service; add organization-approved requests."
+    ]
   },
   {
     "tool": "virustotal",
     "aliases": [
       "virustotal"
-    ],
-    "reason": "Authenticated service; API commands not curated."
+    ]
   },
   {
     "tool": "censys",
     "aliases": [
       "censys"
-    ],
-    "reason": "CLI/API changed across platform generations; commands need review."
+    ]
   },
   {
     "tool": "wayback-machine",
@@ -389,8 +385,7 @@
       "wayback machine",
       "wayback cdx",
       "internet archive"
-    ],
-    "reason": "CDX service; CLI alternatives are catalogued separately."
+    ]
   },
   {
     "tool": "facebook-ct",
@@ -398,14 +393,14 @@
       "ct.facebook.com",
       "facebook ct"
     ],
-    "reason": "Legacy service; availability needs verification."
+    "reason": "Legacy Facebook certificate-search endpoint; current supported domain-query API could not be confirmed.",
+    "reference": "https://developers.facebook.com/docs/certificate-transparency/"
   },
   {
     "tool": "chaos",
     "aliases": [
       "chaos dataset"
-    ],
-    "reason": "API credentials required; commands not curated."
+    ]
   },
   {
     "tool": "rapid7-sonar",
@@ -414,162 +409,158 @@
       "project sonar",
       "rapid7 sonar"
     ],
-    "reason": "Dataset download service; commands not curated."
+    "reason": "Dataset access and credentials vary. No current universal domain-query command was confirmed.",
+    "reference": "https://opendata.rapid7.com/"
   },
   {
     "tool": "recon.dev",
     "aliases": [
       "recon.dev"
     ],
-    "reason": "Service availability needs verification."
+    "reason": "No current maintained API contract could be confirmed. Legacy examples were not copied.",
+    "reference": "https://recon.dev/"
   },
   {
     "tool": "bufferover.run",
     "aliases": [
       "bufferover.run"
     ],
-    "reason": "Service API needs verification."
+    "reason": "Legacy endpoint; current DNS API and authentication contract could not be confirmed.",
+    "reference": "https://bufferover.run/"
   },
   {
     "tool": "certspotter",
     "aliases": [
       "certspotter"
-    ],
-    "reason": "Authenticated certificate API; commands not curated."
+    ]
   },
   {
     "tool": "fofa",
     "aliases": [
       "fofa"
-    ],
-    "reason": "Search service; API credentials required."
+    ]
   },
   {
     "tool": "zoomeye",
     "aliases": [
       "zoomeye"
-    ],
-    "reason": "Search service; commands not curated."
+    ]
   },
   {
     "tool": "dorkassistant",
     "aliases": [
       "dorkassistant"
     ],
-    "reason": "No stable CLI interface confirmed."
+    "reason": "The checklist does not identify a unique maintained project or command interface."
   },
   {
     "tool": "wappalyzer",
     "aliases": [
       "wappalyzer"
-    ],
-    "reason": "Browser extension/service; webanalyze is catalogued separately."
+    ]
   },
   {
     "tool": "builtwith",
     "aliases": [
       "builtwith"
-    ],
-    "reason": "Authenticated API service; commands not curated."
+    ]
   },
   {
     "tool": "jsparser",
     "aliases": [
       "jsparser"
     ],
-    "reason": "Ambiguous project name; select a specific implementation."
+    "reason": "The identifiable NahamSec project is a legacy Python 2 web service, not a current standalone parsing CLI.",
+    "reference": "https://github.com/nahamsec/JSParser"
   },
   {
     "tool": "xposed",
     "aliases": [
       "xposed"
     ],
-    "reason": "GUI/framework workflow; no universal CLI."
+    "reason": "Android runtime framework with module-specific setup; no universal Xposed scan command.",
+    "reference": "https://github.com/rovo89/Xposed"
   },
   {
     "tool": "fsmon",
     "aliases": [
       "fsmon"
-    ],
-    "reason": "Platform-specific CLI requires verification."
+    ]
   },
   {
     "tool": "hopper",
     "aliases": [
       "hopper"
     ],
-    "reason": "GUI disassembler; launcher depends on platform."
+    "reason": "GUI workflow and platform-specific launcher; no current documented batch CLI was confirmed.",
+    "reference": "https://www.hopperapp.com/"
   },
   {
     "tool": "ida",
     "aliases": [
       "ida"
-    ],
-    "reason": "GUI disassembler; launcher depends on installed edition."
+    ]
   },
   {
     "tool": "keychain-dumper",
     "aliases": [
       "keychain dumper",
       "keychain-dumper"
-    ],
-    "reason": "Requires a compatible jailbroken device; flags not curated."
+    ]
   },
   {
     "tool": "dnspy",
     "aliases": [
       "dnspy"
-    ],
-    "reason": "GUI decompiler; edition-specific launcher."
+    ]
   },
   {
     "tool": "ilspy",
     "aliases": [
       "ilspy"
-    ],
-    "reason": "GUI decompiler; ilspycmd is a separate install."
+    ]
   },
   {
     "tool": "jd-gui",
     "aliases": [
       "jd-gui"
     ],
-    "reason": "GUI Java decompiler."
+    "reason": "Java GUI decompiler; no documented batch decompilation command. CFR provides the related CLI workflow.",
+    "reference": "https://github.com/java-decompiler/jd-gui"
   },
   {
     "tool": "process-monitor",
     "aliases": [
       "process monitor",
       "procmon"
-    ],
-    "reason": "Windows GUI workflow; CLI flags need review."
+    ]
   },
   {
     "tool": "api-monitor",
     "aliases": [
       "api monitor"
     ],
-    "reason": "Windows GUI API monitor."
+    "reason": "Rohitab GUI API monitor; no supported command-line capture contract was confirmed.",
+    "reference": "http://www.rohitab.com/apimonitor"
   },
   {
     "tool": "cheat-engine",
     "aliases": [
       "cheat engine"
     ],
-    "reason": "GUI memory inspection tool."
+    "reason": "GUI memory inspection workflow. No general app-analysis CLI was confirmed.",
+    "reference": "https://www.cheatengine.org/"
   },
   {
     "tool": "squid",
     "aliases": [
       "squid"
-    ],
-    "reason": "Proxy service named for identification, not a test command."
+    ]
   },
   {
     "tool": "ccproxy",
     "aliases": [
       "ccproxy"
-    ],
-    "reason": "Proxy service with GUI configuration."
+    ]
   }
 ]

@@ -15,6 +15,7 @@ export interface Tool {
   id?: string;
   custom?: boolean;
   sources?: string[];
+  reviewedOn?: string;
 }
 export interface Check {
   id: string;

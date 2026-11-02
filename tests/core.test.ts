@@ -136,6 +136,11 @@ test('every linked ID exists, and each curated tool has three to eight real comm
     assert.ok(ids.has(id));
   }
   for (const tool of commands) {
+    assert.ok(tool.sources.length > 0, tool.tool + ' needs a source');
+    assert.equal(
+      new Set(tool.commands.map((command) => command.command)).size,
+      tool.commands.length,
+    );
     assert.ok(tool.commands.length >= 3 && tool.commands.length <= 8, tool.tool);
     for (const command of tool.commands) {
       assert.ok(command.command.trim());
@@ -144,4 +149,43 @@ test('every linked ID exists, and each curated tool has three to eight real comm
       }
     }
   }
+});
+
+test('researched corrections use documented Objection, Fingerprintx, and BuiltWith interfaces', () => {
+  const objection = commands.find((tool) => tool.tool === 'objection')!;
+  assert.equal(
+    objection.commands.some((command) => command.command.includes('list-applications')),
+    false,
+  );
+  const fingerprint = commands.find((tool) => tool.tool === 'fingerprintx')!;
+  assert.equal(
+    fingerprint.commands.some((command) => /(^|\s)-json(\s|$)/.test(command.command)),
+    false,
+  );
+  assert.ok(fingerprint.commands.some((command) => command.command.includes('--json')));
+  const builtwith = commands.find((tool) => tool.tool === 'builtwith')!;
+  assert.ok(builtwith.commands.every((command) => command.command.includes('/v26/')));
+  assert.ok(
+    builtwith.commands.every((command) =>
+      command.command.includes('Authorization: API $BUILTWITH_API_KEY'),
+    ),
+  );
+});
+
+test('API request bodies remain valid JSON after normal placeholder replacement', () => {
+  let requestCount = 0;
+  for (const tool of commands) {
+    for (const example of tool.commands) {
+      const command = fillCommand(example.command, {
+        domain: 'example.test',
+        url: 'https://example.test',
+        target: '192.0.2.1',
+      });
+      for (const match of command.matchAll(/--data '({[^']*})'/g)) {
+        assert.doesNotThrow(() => JSON.parse(match[1]), tool.tool + ': ' + example.label);
+        requestCount += 1;
+      }
+    }
+  }
+  assert.ok(requestCount > 0, 'At least one API body must be validated');
 });

@@ -73,11 +73,12 @@ export function CommandPanel({
           {tool.sources && (
             <div className="small muted">
               Reference:{' '}
-              {tool.sources.map((source) => (
+              {tool.sources.map((source, index) => (
                 <a key={source} href={source} target="_blank" rel="noreferrer">
-                  official documentation ↗
+                  source {index + 1} ↗
                 </a>
               ))}
+              {tool.reviewedOn && <span> · Documentation reviewed {tool.reviewedOn}</span>}
             </div>
           )}
         </section>

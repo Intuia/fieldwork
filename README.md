@@ -23,7 +23,7 @@ npm run commands:report
 ## Features
 
 - 8,207 built-in checks across 189 categories and five domains; existing numeric IDs preserved as strings.
-- 172 command examples for 54 CLI tools, with 3–5 examples each. The alias registry recognizes 88 tools and services. Commands that have not been confidently confirmed against current documentation have `verify: true` and a visible badge.
+- 443 command examples for 75 tools and APIs, with 3–8 examples each. The alias registry recognizes 88 tools and services. Commands whose compatibility with the installed stable release remains uncertain have `verify: true` and a visible badge. Every curated tool has source links and a documentation review date.
 - Expandable command panels, live Current target replacement, independent inputs for other placeholders, per-command Copy, and per-tool Copy all.
 - Custom checks, attached commands, categories, tool libraries, notes, editing, deletion, progress, and custom badges. Built-in JSON data stays immutable.
 - Search across all domains, tool names, command labels/text, and notes; matching command panels expand automatically. Filters include completed, pending, commands, and custom items.
@@ -39,8 +39,8 @@ npm run commands:report
 - A new tool typed into a check/command form becomes a custom tool. Custom tool library commands are shared with all checks linked to that tool; commands attached directly to a check remain scoped to it.
 - Export JSON backs up custom data and notes; completion progress and Current target are not included. Use markdown to export completion state.
 - Only the five supplied domains are supported. Custom categories can be added inside any of them.
-- Some checklist references are browser services, GUI workflows, legacy tools, or ambiguous project names. These remain linked with zero curated commands rather than fabricated CLI flags. `npm run commands:report` currently lists 40 checks with gaps and a reason for each missing tool. Add tool aliases to `src/data/toolRegistry.json` and examples to `src/data/commands.json`, then run `npm run commands:map`.
-- Commands are copyable text; the app never executes them. Placeholder replacement is literal, without shell escaping. Commands using `printf`, pipes, or redirection assume a POSIX-style shell. Supply arguments appropriate for your shell and installed tool. Some tools need API credentials, platform setup, or elevated privileges.
+- Some checklist references are GUI workflows, legacy services, or ambiguous project names. These remain linked with zero curated commands rather than fabricated CLI flags. `npm run commands:report` currently lists 14 checks with gaps across 13 tools/services and a reason for each missing tool. Add tool aliases to `src/data/toolRegistry.json` and examples to `src/data/commands.json`, then run `npm run commands:map`.
+- Commands are copyable text; the app never executes them. Placeholder replacement is literal, without shell escaping. Commands using `$API_KEY`, `printf`, pipes, or redirection assume a POSIX-style shell. Supply arguments appropriate for your shell and installed tool. Environment variables are names only; no real API credentials are embedded or collected. Some tools need API credentials, paid-plan access, platform setup, or elevated privileges.
 - A browser storage quota or disabled storage can prevent persistence; export JSON to keep a backup. Data stays in this browser. Google Fonts is optional styling; system font fallbacks work without network access.
 
 ## Code guide
@@ -68,6 +68,6 @@ Core examples were checked against official documentation where available:
 - [mitmproxy stable documentation](https://docs.mitmproxy.org/stable/)
 - [Amass user guide](https://github.com/owasp-amass/amass/wiki/User-Guide)
 
-The Amass wiki spans older versions, and Objection changed its session command; their examples intentionally retain the verify badge. Other unverified entries also carry the badge. Tool binaries were not installed or executed as part of app validation.
+The 2026-11-02 research pass downloaded 67 official documentation/source references and reviewed additional vendor API references online. See `COMMAND-RESEARCH.md` for the full tool/source inventory and `src/data/commandSourceAudit.json` for retrieval hashes. This is a curated common-use library, not every possible subcommand or flag permutation. Upstream default branches may differ from released packages. Amass and Objection examples intentionally retain verify badges where release compatibility needs checking. Tool binaries and authenticated API calls were not executed as part of validation.
 
 Only test targets you are authorized to test.
