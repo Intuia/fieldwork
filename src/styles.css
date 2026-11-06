@@ -411,6 +411,36 @@ p {
 .category-card {
   margin-bottom: 19px;
 }
+.category-menu {
+  margin-bottom: 20px;
+}
+.category-menu label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.category-menu select {
+  width: 100%;
+  min-height: 44px;
+}
+.category-title .category-toggle {
+  width: 100%;
+  min-height: 44px;
+  text-align: left;
+  font-weight: inherit;
+  border: 0;
+  background: transparent;
+  padding: 5px 0;
+  scroll-margin-top: 20px;
+}
+.category-title .category-toggle:hover {
+  color: var(--green);
+}
+.category-chevron {
+  display: inline-block;
+  width: 20px;
+  color: var(--green);
+}
 .category-heading {
   display: flex;
   align-items: center;

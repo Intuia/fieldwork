@@ -133,6 +133,7 @@ export default function App() {
   const [filter, setFilter] = useState('all');
   const [selectedTool, setSelectedTool] = useState('nmap');
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
   const [searchCollapsed, setSearchCollapsed] = useState<Record<string, boolean>>({});
   const [limit, setLimit] = useState(10);
   const [modal, setModal] = useState<Modal | null>(null);
@@ -344,6 +345,12 @@ export default function App() {
     }
   }
   function revealCheck(check: Check) {
+    const category = categories.find(
+      (item) => item.domain === check.domain && item.name === check.category,
+    );
+    if (category) {
+      setExpandedCategories((current) => ({ ...current, [category.id]: true }));
+    }
     setDomain(check.domain);
     setView('checks');
     setFilter('all');
@@ -592,6 +599,41 @@ export default function App() {
                   {filtered.length.toLocaleString()} checks · {visibleCategories.length} categories
                 </span>
               </div>
+              <div className="category-menu">
+                <label htmlFor="category-menu">Browse categories</label>
+                <select
+                  id="category-menu"
+                  value=""
+                  aria-describedby="category-menu-hint"
+                  onChange={(event) => {
+                    const index = visibleCategories.findIndex(
+                      (category) => category.id === event.target.value,
+                    );
+                    const category = visibleCategories[index];
+                    if (!category) return;
+                    setLimit((current) => Math.max(current, index + 1));
+                    setExpandedCategories((current) => ({ ...current, [category.id]: true }));
+                    requestAnimationFrame(() => {
+                      const heading = document.getElementById('category-toggle-' + category.id);
+                      heading?.focus({ preventScroll: true });
+                      heading?.scrollIntoView({ block: 'start' });
+                    });
+                  }}
+                >
+                  <option value="" disabled>
+                    Choose a category to expand
+                  </option>
+                  {visibleCategories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {deferredQuery ? category.domain + ' / ' : ''}
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+                <p id="category-menu-hint" className="muted small">
+                  Choose a category or click its heading to expand the checklist.
+                </p>
+              </div>
               <div className="categories">
                 {visibleCategories.slice(0, limit).map((category) => {
                   const categoryChecks = filtered.filter(
@@ -601,6 +643,7 @@ export default function App() {
                     (check) => check.domain === category.domain && check.category === category.name,
                   );
                   const completed = allCategoryChecks.filter((check) => progress[check.id]).length;
+                  const categoryOpen = expandedCategories[category.id] ?? Boolean(deferredQuery);
                   return (
                     <section className="card category-card" key={category.id}>
                       <div className="category-heading">
@@ -610,10 +653,27 @@ export default function App() {
                         <div className="category-title">
                           {query && <span className="eyebrow">{category.domain}</span>}
                           <h3>
-                            {category.name}{' '}
-                            {category.id.startsWith('custom-') && (
-                              <span className="badge">custom</span>
-                            )}
+                            <button
+                              type="button"
+                              className="category-toggle"
+                              id={'category-toggle-' + category.id}
+                              aria-expanded={categoryOpen}
+                              aria-controls={'category-panel-' + category.id}
+                              onClick={() =>
+                                setExpandedCategories((current) => ({
+                                  ...current,
+                                  [category.id]: !categoryOpen,
+                                }))
+                              }
+                            >
+                              <span className="category-chevron" aria-hidden="true">
+                                {categoryOpen ? '▾' : '▸'}
+                              </span>
+                              {category.name}{' '}
+                              {category.id.startsWith('custom-') && (
+                                <span className="badge">custom</span>
+                              )}
+                            </button>
                           </h3>
                           <span className="muted small">
                             {completed} of {allCategoryChecks.length} completed
@@ -633,114 +693,124 @@ export default function App() {
                           </div>
                         )}
                       </div>
-                      <div>
-                        {categoryChecks.map((check) => {
-                          const linked = checkTools(check, data);
-                          const hasTools = linked.length > 0;
-                          const isOpen =
-                            Boolean(expanded[check.id]) ||
-                            (Boolean(deferredQuery) && hasTools && !searchCollapsed[check.id]);
-                          return (
-                            <article
-                              className={'check-item ' + (progress[check.id] ? 'is-done' : '')}
-                              id={'check-' + check.id}
-                              key={check.id}
-                            >
-                              <div className="check-line">
-                                <input
-                                  type="checkbox"
-                                  checked={Boolean(progress[check.id])}
-                                  onChange={() => toggleDone(check.id)}
-                                  aria-label={'Complete: ' + check.check}
-                                />
-                                <div className="check-content">
-                                  <span className="check-text">{check.check}</span>
-                                  {check.custom && <span className="badge">custom</span>}
-                                  <div className="check-actions">
-                                    {hasTools && (
-                                      <button
-                                        className={'command-toggle ' + (isOpen ? 'open' : '')}
-                                        aria-expanded={isOpen}
-                                        aria-controls={'commands-' + check.id}
-                                        onClick={() => {
-                                          setExpanded((current) => ({
-                                            ...current,
-                                            [check.id]: !isOpen,
-                                          }));
-                                          setSearchCollapsed((current) => ({
-                                            ...current,
-                                            [check.id]: isOpen,
-                                          }));
-                                        }}
-                                      >
-                                        {'</>'} commands <span>{isOpen ? '−' : '+'}</span>
-                                      </button>
-                                    )}
-                                    <button
-                                      onClick={() =>
-                                        setModal({ kind: 'command', checkId: check.id })
-                                      }
-                                    >
-                                      + Add command
-                                    </button>
-                                    <details className="note">
-                                      <summary>
-                                        {data.notes[check.id] ? 'Edit note' : '+ Note'}
-                                      </summary>
-                                      <textarea
-                                        aria-label={'Note for ' + check.check}
-                                        value={data.notes[check.id] || ''}
-                                        onChange={(event) =>
-                                          updateData({
-                                            ...data,
-                                            notes: {
-                                              ...data.notes,
-                                              [check.id]: event.target.value,
-                                            },
-                                          })
-                                        }
-                                        placeholder="Evidence, observations, next steps…"
+                      <div id={'category-panel-' + category.id} hidden={!categoryOpen}>
+                        {categoryOpen && (
+                          <>
+                            <div>
+                              {categoryChecks.map((check) => {
+                                const linked = checkTools(check, data);
+                                const hasTools = linked.length > 0;
+                                const isOpen =
+                                  Boolean(expanded[check.id]) ||
+                                  (Boolean(deferredQuery) &&
+                                    hasTools &&
+                                    !searchCollapsed[check.id]);
+                                return (
+                                  <article
+                                    className={
+                                      'check-item ' + (progress[check.id] ? 'is-done' : '')
+                                    }
+                                    id={'check-' + check.id}
+                                    key={check.id}
+                                  >
+                                    <div className="check-line">
+                                      <input
+                                        type="checkbox"
+                                        checked={Boolean(progress[check.id])}
+                                        onChange={() => toggleDone(check.id)}
+                                        aria-label={'Complete: ' + check.check}
                                       />
-                                    </details>
-                                    {check.custom && (
-                                      <>
-                                        <button
-                                          onClick={() =>
-                                            setModal({ kind: 'check', category, check })
-                                          }
-                                        >
-                                          Edit check
-                                        </button>
-                                        <button
-                                          className="danger"
-                                          onClick={() => deleteCheck(check)}
-                                        >
-                                          Delete check
-                                        </button>
-                                      </>
+                                      <div className="check-content">
+                                        <span className="check-text">{check.check}</span>
+                                        {check.custom && <span className="badge">custom</span>}
+                                        <div className="check-actions">
+                                          {hasTools && (
+                                            <button
+                                              className={'command-toggle ' + (isOpen ? 'open' : '')}
+                                              aria-expanded={isOpen}
+                                              aria-controls={'commands-' + check.id}
+                                              onClick={() => {
+                                                setExpanded((current) => ({
+                                                  ...current,
+                                                  [check.id]: !isOpen,
+                                                }));
+                                                setSearchCollapsed((current) => ({
+                                                  ...current,
+                                                  [check.id]: isOpen,
+                                                }));
+                                              }}
+                                            >
+                                              {'</>'} commands <span>{isOpen ? '−' : '+'}</span>
+                                            </button>
+                                          )}
+                                          <button
+                                            onClick={() =>
+                                              setModal({ kind: 'command', checkId: check.id })
+                                            }
+                                          >
+                                            + Add command
+                                          </button>
+                                          <details className="note">
+                                            <summary>
+                                              {data.notes[check.id] ? 'Edit note' : '+ Note'}
+                                            </summary>
+                                            <textarea
+                                              aria-label={'Note for ' + check.check}
+                                              value={data.notes[check.id] || ''}
+                                              onChange={(event) =>
+                                                updateData({
+                                                  ...data,
+                                                  notes: {
+                                                    ...data.notes,
+                                                    [check.id]: event.target.value,
+                                                  },
+                                                })
+                                              }
+                                              placeholder="Evidence, observations, next steps…"
+                                            />
+                                          </details>
+                                          {check.custom && (
+                                            <>
+                                              <button
+                                                onClick={() =>
+                                                  setModal({ kind: 'check', category, check })
+                                                }
+                                              >
+                                                Edit check
+                                              </button>
+                                              <button
+                                                className="danger"
+                                                onClick={() => deleteCheck(check)}
+                                              >
+                                                Delete check
+                                              </button>
+                                            </>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                    {isOpen && (
+                                      <div id={'commands-' + check.id}>
+                                        <CommandPanel
+                                          tools={linked}
+                                          target={target}
+                                          onEdit={editCommand}
+                                          onDelete={deleteCommand}
+                                        />
+                                      </div>
                                     )}
-                                  </div>
-                                </div>
-                              </div>
-                              {isOpen && (
-                                <div id={'commands-' + check.id}>
-                                  <CommandPanel
-                                    tools={linked}
-                                    target={target}
-                                    onEdit={editCommand}
-                                    onDelete={deleteCommand}
-                                  />
-                                </div>
-                              )}
-                            </article>
-                          );
-                        })}
-                      </div>
-                      <div className="category-footer">
-                        <button onClick={() => setModal({ kind: 'check', category })}>
-                          + Add check
-                        </button>
-                        <span>{categoryChecks.length} checks</span>
+                                  </article>
+                                );
+                              })}
+                            </div>
+                            <div className="category-footer">
+                              <button onClick={() => setModal({ kind: 'check', category })}>
+                                + Add check
+                              </button>
+                              <span>{categoryChecks.length} checks</span>
+                            </div>
+                          </>
+                        )}
                       </div>
                     </section>
                   );

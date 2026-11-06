@@ -22,6 +22,7 @@ npm run commands:report
 
 ## Features
 
+- Category dropdown opens any matching category, with independently expandable headings and completion counts. Collapsed categories retain checklist progress; search results expand automatically.
 - 8,207 built-in checks across 189 categories and five domains; existing numeric IDs preserved as strings.
 - 443 command examples for 75 tools and APIs, with 3–8 examples each. The alias registry recognizes 88 tools and services. Commands whose compatibility with the installed stable release remains uncertain have `verify: true` and a visible badge. Every curated tool has source links and a documentation review date.
 - Expandable command panels, live Current target replacement, independent inputs for other placeholders, per-command Copy, and per-tool Copy all.
