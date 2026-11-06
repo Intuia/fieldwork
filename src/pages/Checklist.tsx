@@ -154,6 +154,39 @@ export default function Checklist() {
         </div>
       </div>
 
+      <div className="mb-6">
+        <label htmlFor="checklist-category-menu" className="block text-sm font-heading font-bold text-slate-200 mb-2">
+          Browse categories
+        </label>
+        <select
+          id="checklist-category-menu"
+          value=""
+          aria-describedby="checklist-category-hint"
+          onChange={event => {
+            const index = Number(event.target.value)
+            const category = categories[index]
+            if (!category) return
+            setExpandedCategories(prev => new Set(prev).add(category.name))
+            requestAnimationFrame(() => {
+              const trigger = document.getElementById(`checklist-category-${index}`)
+              trigger?.focus({ preventScroll: true })
+              trigger?.scrollIntoView({ block: 'start' })
+            })
+          }}
+          className="w-full min-h-12 px-3 py-2 rounded-lg bg-navy-800 border border-[var(--border-subtle)] text-base text-slate-200 cursor-pointer"
+        >
+          <option value="" disabled>Choose a category to expand</option>
+          {categories.map((cat, index) => (
+            <option key={cat.name} value={index}>
+              {cat.name} ({cat.items.filter(item => checked[item.id]).length}/{cat.items.length} completed)
+            </option>
+          ))}
+        </select>
+        <p id="checklist-category-hint" className="mt-2 text-sm text-slate-400">
+          Choose a category to open its checklist, or use the category headings below.
+        </p>
+      </div>
+
       {/* Each category opens independently; checked state survives collapsing. */}
       <div className="space-y-3">
         {categories.map((cat, index) => {
@@ -171,7 +204,7 @@ export default function Checklist() {
                   aria-expanded={isExpanded}
                   aria-controls={panelId}
                   onClick={() => toggleCategory(cat.name)}
-                  className="w-full min-h-14 flex items-center gap-3 p-4 sm:p-5 rounded-xl text-left hover:bg-navy-700/50 transition-colors cursor-pointer"
+                  className="w-full min-h-14 scroll-mt-24 flex items-center gap-3 p-4 sm:p-5 rounded-xl text-left hover:bg-navy-700/50 transition-colors cursor-pointer"
                 >
                   <span className="min-w-0 flex-1 font-heading font-bold text-base text-slate-200 break-words">
                     {cat.name}
