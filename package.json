@@ -1,34 +1,27 @@
 {
-  "name": "attacking-authentication",
+  "name": "fieldwork-checklist",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 127.0.0.1",
     "build": "tsc -b && vite build",
-    "lint": "oxlint",
-    "preview": "vite preview",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "preview": "vite preview --host 127.0.0.1",
+    "commands:report": "node scripts/commands-report.mjs",
+    "commands:map": "node scripts/commands-report.mjs --write",
+    "test": "tsx --test tests/*.test.ts"
   },
   "dependencies": {
-    "framer-motion": "^14.7.1",
-    "fuse.js": "^7.5.0",
-    "lucide-react": "^1.64.0",
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1",
-    "react-router-dom": "^7.18.5"
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.3.3",
-    "@types/node": "^24.19.2",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "@vitejs/plugin-react": "^6.1.2",
-    "oxlint": "^1.89.0",
-    "tailwindcss": "^4.3.3",
-    "typescript": "~7.0.2",
-    "vite": "^8.3.5",
-    "vitest": "^5.0.5"
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "prettier": "^3.9.10",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.0"
   }
 }
