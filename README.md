@@ -1,73 +1,94 @@
-# Fieldwork checklist
+# Attacking Authentication — Ch. 6 Study Guide
 
-A local React + TypeScript app built around the supplied `checks.json` and `checks_flat.json` files. No original application source was supplied, so this is a standalone implementation.
+Interactive educational website covering Chapter 6 "Attacking Authentication" from *The Web Application Hacker's Handbook, 2nd ed.*, with an update module comparing 2011 guidance to current standards (NIST SP 800-63-4, OWASP, FIDO Alliance 2025).
 
-## Run
+## Stack
 
-Requires Node.js 20.19+ or 22.12+.
+- **Vite** + **React 19** + **TypeScript**
+- **Tailwind CSS v4** with custom design tokens
+- **Framer Motion** for animations (respects `prefers-reduced-motion`)
+- **Fuse.js** for client-side search (Ctrl+K)
+- **Vitest** for unit tests
 
-```sh
+## Getting Started
+
+```bash
 npm install
-npm run dev
+npm run dev        # Start dev server at http://localhost:5173
+npm run build      # Production build to dist/
+npm run test       # Run Vitest unit tests
+npm run test:watch # Run tests in watch mode
 ```
 
-Open the localhost address printed by Vite. Keep the same host and port to retain the same browser storage.
+## Site Map (12 routes)
 
-```sh
+| Route | Content | Source Slides |
+|---|---|---|
+| `/` | Home — objectives, access chain, takeaways | 1, 3, 5, 64 |
+| `/technologies` | Authentication technologies (forms, MFA, certs, federation) | 6–10 |
+| `/design-flaws` | 14 design flaws with attack/impact/fix | 11–26 |
+| `/implementation-flaws` | 5 implementation flaws (fail-open, state machine, storage) | 27–32 |
+| `/threat-model` | 2×2 threat mapping grid | 33 |
+| `/defenses` | 4-layer defense architecture with 9 controls | 34–43 |
+| `/assessment` | Safe testing workflow and case analyses | 44–48 |
+| `/then-vs-now` | 2011 vs current standards comparison | 49–58 |
+| `/labs` | 8 interactive client-side labs | — |
+| `/quiz` | 28 scenario-based questions with instant feedback | — |
+| `/checklist` | 22-item interactive review checklist (Slide 62) | 62 |
+| `/references` | Source links (NIST, OWASP, FIDO, textbook) | — |
+
+## Interactive Labs
+
+All labs run entirely in the browser with toy in-memory servers. No real network requests or attack tooling.
+
+1. **Access Chain Explorer** — Toggle failures at each authentication link
+2. **Enumeration Comparator** — Side-by-side vulnerable vs hardened responses
+3. **Rate-Limit Simulator** — Compare 4 counter placement strategies
+4. **Multistage State Machine** — Skip/repeat/reorder/cross-account attacks
+5. **Password Storage Cost** — Compare plaintext, fast hash, and slow hash breach impact
+6. **Policy Checker** — Evaluate passwords under 2011 rules vs NIST 800-63B-4
+7. **MFA Factor Sorter** — Sort authenticators by factor category and phishing resistance
+8. **Then-vs-Now Slider** — Timeline slider morphing guidance from 2011 to 2025
+
+## Tests
+
+Unit tests cover the server logic for labs 2, 3, 4, and 6:
+
+```bash
+npm run test
+```
+
+## Safety & Ethics
+
+This is defensive security education. The site does not include working exploit code, real-target tooling, credential lists beyond a tiny illustrative blocklist, or instructions for unauthorized access. Every attack concept is presented with its defense. Labs use fake in-memory toy servers — no real network requests, no scanning, no payload lists, no code that could be pointed at an external host. Passwords entered in labs stay in the browser and are never stored or sent.
+
+## Accessibility
+
+- Skip-to-content link for keyboard users
+- All interactive elements have ARIA labels and keyboard support
+- `prefers-reduced-motion` respected (CSS animations disabled)
+- Focus-visible outlines on all interactive elements
+- Semantic HTML landmarks (`nav`, `main`, `footer`)
+- Print styles included
+
+## Deploy
+
+Build produces a static site in `dist/`. Deploy to any static host.
+
+```bash
 npm run build
-npm run preview
-npm test
-npm run commands:report
+# Upload dist/ to your host
 ```
 
-## Features
+**Vercel:** The included `vercel.json` handles SPA routing automatically.
 
-- 8,207 built-in checks across 189 categories and five domains; existing numeric IDs preserved as strings.
-- 443 command examples for 75 tools and APIs, with 3–8 examples each. The alias registry recognizes 88 tools and services. Commands whose compatibility with the installed stable release remains uncertain have `verify: true` and a visible badge. Every curated tool has source links and a documentation review date.
-- Expandable command panels, live Current target replacement, independent inputs for other placeholders, per-command Copy, and per-tool Copy all.
-- Custom checks, attached commands, categories, tool libraries, notes, editing, deletion, progress, and custom badges. Built-in JSON data stays immutable.
-- Search across all domains, tool names, command labels/text, and notes; matching command panels expand automatically. Filters include completed, pending, commands, and custom items.
-- Tools view shows command counts and related checks. Commands attached to a particular check are only shown on that check; Tools view aggregates them with the tool library.
-- JSON backup contains all custom categories, checks, tools, commands, and notes. Import validates the schema and merges by ID. A confirmation chooses overwrite or keep existing; new items are imported either way. Built-in tools/categories cannot be overwritten.
-- Copy a complete category as markdown with notes and fenced commands, or download the filtered checklist as markdown.
-- Responsive layout and the requested authorization footer.
+**Netlify:** The included `public/_redirects` handles SPA routing automatically.
 
-## Storage and assumptions
+Build command: `npm run build` | Output directory: `dist`
 
-- `customChecklist.v1` stores custom data and notes, including notes on built-in checks. `checklist.progress.v1` and `checklist.target.v1` are separate. Storage access uses try/catch and reports write failures. No previous app storage format was supplied, so legacy progress migration is not attempted.
-- Progress is global to this browser, not per target. Changing Current target updates `{{target}}` only; other placeholders require explicit input. Inline placeholder inputs live for the lifetime of the mounted panel. Markdown uses the current target and retains other placeholders.
-- A new tool typed into a check/command form becomes a custom tool. Custom tool library commands are shared with all checks linked to that tool; commands attached directly to a check remain scoped to it.
-- Export JSON backs up custom data and notes; completion progress and Current target are not included. Use markdown to export completion state.
-- Only the five supplied domains are supported. Custom categories can be added inside any of them.
-- Some checklist references are GUI workflows, legacy services, or ambiguous project names. These remain linked with zero curated commands rather than fabricated CLI flags. `npm run commands:report` currently lists 14 checks with gaps across 13 tools/services and a reason for each missing tool. Add tool aliases to `src/data/toolRegistry.json` and examples to `src/data/commands.json`, then run `npm run commands:map`.
-- Commands are copyable text; the app never executes them. Placeholder replacement is literal, without shell escaping. Commands using `$API_KEY`, `printf`, pipes, or redirection assume a POSIX-style shell. Supply arguments appropriate for your shell and installed tool. Environment variables are names only; no real API credentials are embedded or collected. Some tools need API credentials, paid-plan access, platform setup, or elevated privileges.
-- A browser storage quota or disabled storage can prevent persistence; export JSON to keep a backup. Data stays in this browser. Google Fonts is optional styling; system font fallbacks work without network access.
+## Sources
 
-## Code guide
-
-- `src/components/CommandPanel.tsx`, `CommandBlock.tsx`, `AddCheckForm.tsx`, `AddCommandForm.tsx`, `ToolsView.tsx`: requested components.
-- `src/lib/fillCommand.ts`: all placeholder parsing and literal substitution.
-- `src/hooks/useCustomChecklist.ts`: versioned custom storage and write warnings.
-- `src/lib/customData.ts`: import validation, conflict counts, and merge rules.
-- `src/lib/model.ts`: built-in/custom composition, links, search, and command scope.
-- `src/lib/markdown.ts`: markdown with safe code fences.
-- `scripts/tool-matching.mjs`: case-insensitive, boundary-aware tool alias matching.
-- `tests/core.test.ts`: placeholder edge cases, import validation, merge conflicts, command isolation, markdown, and catalog integrity.
-
-## Command references
-
-Core examples were checked against official documentation where available:
-
-- [Nmap reference](https://nmap.org/book/man.html)
-- [ProjectDiscovery tools](https://projectdiscovery.io/open-source)
-- [Subfinder](https://github.com/projectdiscovery/subfinder), [httpx](https://github.com/projectdiscovery/httpx)
-- [ffuf](https://github.com/ffuf/ffuf), [Gobuster](https://github.com/OJ/gobuster)
-- [sqlmap usage](https://github.com/sqlmapproject/sqlmap/wiki/Usage)
-- [JADX](https://github.com/skylot/jadx), [Frida processes](https://frida.re/docs/frida-ps/)
-- [Objection usage](https://github.com/sensepost/objection/wiki/Using-objection)
-- [mitmproxy stable documentation](https://docs.mitmproxy.org/stable/)
-- [Amass user guide](https://github.com/owasp-amass/amass/wiki/User-Guide)
-
-The 2026-11-02 research pass downloaded 67 official documentation/source references and reviewed additional vendor API references online. See `COMMAND-RESEARCH.md` for the full tool/source inventory and `src/data/commandSourceAudit.json` for retrieval hashes. This is a curated common-use library, not every possible subcommand or flag permutation. Upstream default branches may differ from released packages. Amass and Objection examples intentionally retain verify badges where release compatibility needs checking. Tool binaries and authenticated API calls were not executed as part of validation.
-
-Only test targets you are authorized to test.
+- *The Web Application Hacker's Handbook*, 2nd ed., Chapter 6 (Wiley, 2011)
+- NIST SP 800-63-4 / 63B-4 — Digital Identity Guidelines (final, July 2025)
+- OWASP Authentication & Password Storage Cheat Sheets
+- FIDO Alliance — Passkeys guidance (2025)
